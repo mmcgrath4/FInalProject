@@ -3,7 +3,8 @@ import java.awt.TextField;
 
 public class GameViewer extends JFrame {
     private Game g;
-    private TextField box;
+    private TextField box1;
+    private TextField box2;
     private final int WINDOW_WIDTH = 1000;
     private final int WINDOW_HEIGHT = 1000;
 
