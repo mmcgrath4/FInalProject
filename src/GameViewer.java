@@ -9,11 +9,17 @@ public class GameViewer extends JFrame {
     private final int WINDOW_HEIGHT = 1000;
 
     public GameViewer(Game g) {
+        box1 = new TextField("", 20);
+        box2 = new TextField("", 20);
 
         this.setDefaultCloseOperation(EXIT_ON_CLOSE);
-        this.setTitle("War Game");
+        this.setTitle("Word Seach Game");
         this.setSize(WINDOW_WIDTH, WINDOW_HEIGHT);
         this.setVisible(true);
+    }
+
+    public void paint() {
+        
     }
 
 }
