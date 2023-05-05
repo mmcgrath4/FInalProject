@@ -11,8 +11,6 @@ public class Game{
     private GameViewer window;
     private Board[] boards;
     private Board b;
-    private Image[] boardImages;
-    private ArrayList<String[]> grids;
     private Player p1;
     private Player p2;
     private Timer clock;
@@ -21,9 +19,10 @@ public class Game{
     public static final int DICTIONARY_SIZE = 10000;
     public static final String[] DICTIONARY = new String[DICTIONARY_SIZE];
     private static int numBoards = 2;
+    private static int targetScore = 5;
 
     public Game() {
-        window = new GameViewer(this);
+
         boards = new Board[numBoards];
         makeBoards();
         int random = (int) (Math.random() * numBoards);
@@ -33,12 +32,16 @@ public class Game{
         clock = new Timer();
         grid = b.getGrid();
         words = new ArrayList<>();
+        window = new GameViewer(this);
     }
 
     public void playGame() {
         loadDictionary();
         generateWords(grid);
-        System.out.println(words.size());
+        window.repaint();
+        while (p1.getScore() <= targetScore && p2.getScore() <= targetScore) {
+
+        }
     }
 
     public ArrayList<String> generateWords(String[] grid) {
@@ -159,6 +162,10 @@ public class Game{
                 "WECPVONBJAHCTEB", "SOKXDSXGYRBVMKN", "ELIHWABQTIQLAXC", "ZCNEDRUDOLPHYEI",
                 "MBGACFEUYVEZRSW", "NDWOTIZHSGATDYF"};
         boards[1] = new Board(grid2, image2, grid2.length, grid2[0].length());
+    }
+
+    public Board getBoard() {
+        return this.b;
     }
 
     public static void main(String[] args){
