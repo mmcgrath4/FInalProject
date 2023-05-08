@@ -1,46 +1,68 @@
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.util.ArrayList;
 import java.util.Locale;
 import java.util.Scanner;
-import java.util.Timer;
 
-public class Game{
+public class Game implements ActionListener {
     private GameViewer window;
     private Board[] boards;
     private Board b;
     private Player p1;
     private Player p2;
-    private Timer clock;
+    private double startTime;
+    private double turnTime;
     private String[] grid;
     private ArrayList<String> words;
+    private Player currentUser;
+    private JTextField tf;
+
     public static final int DICTIONARY_SIZE = 10000;
     public static final String[] DICTIONARY = new String[DICTIONARY_SIZE];
     private static int numBoards = 2;
     private static int targetScore = 5;
+    private static int timer1X = 300;
+    private static int timerY = 760;
+    private static int timer2X = 1125;
+    private static final int SLEEP_TIME = 1000;
 
     public Game() {
-
         boards = new Board[numBoards];
         makeBoards();
         int random = (int) (Math.random() * numBoards);
         b = boards[1];
-        p1 = new Player();
-        p2 = new Player();
-        clock = new Timer();
+        p1 = new Player(timer1X, timerY);
+        p2 = new Player(timer2X, timerY);
+        startTime = System.currentTimeMillis();
+        turnTime = 0;
         grid = b.getGrid();
         words = new ArrayList<>();
+        currentUser = p1;
+        tf = new JTextField(20);
+        tf.setPreferredSize(new Dimension());
         window = new GameViewer(this);
     }
 
     public void playGame() {
         loadDictionary();
         generateWords(grid);
-        window.repaint();
         while (p1.getScore() <= targetScore && p2.getScore() <= targetScore) {
+            window.repaint();
+            resetTimer();
+            Timer clock = new Timer(SLEEP_TIME, this);
+            clock.start();
 
+
+            //start timer
+            //get input
+            //check input
+            //add score if valid
+            //display incorrect if not
+            //switch user
         }
     }
 
@@ -164,12 +186,33 @@ public class Game{
         boards[1] = new Board(grid2, image2, grid2.length, grid2[0].length());
     }
 
+    public void switchUser() {
+        if (currentUser.equals(p1)) {
+            currentUser = p2;
+        }
+        else {
+            currentUser = p1;
+        }
+    }
+    public void resetTimer() {
+        startTime = System.currentTimeMillis();
+        turnTime = 0;
+    }
+
     public Board getBoard() {
         return this.b;
+    }
+
+    @Override
+    public void actionPerformed(ActionEvent e) {
+        turnTime ++;
+        window.repaint();
     }
 
     public static void main(String[] args){
         Game g = new Game();
         g.playGame();
     }
+
+
 }

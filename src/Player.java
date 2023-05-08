@@ -1,12 +1,14 @@
 public class Player {
     private int score;
-    private String name;
     private String input;
+    private int timerX;
+    private int timerY;
 
-    public Player() {
+    public Player(int timerX, int timerY) {
         score = 0;
-        name = "";
         input = "";
+        this.timerX = timerX;
+        this.timerY = timerY;
     }
 
     public int getScore() {
@@ -15,14 +17,6 @@ public class Player {
 
     public void setScore(int score) {
         this.score = score;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
     }
 
     public String getInput() {
