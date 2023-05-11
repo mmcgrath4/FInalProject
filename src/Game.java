@@ -19,9 +19,7 @@ public class Game implements ActionListener {
     private String[] grid;
     private ArrayList<String> words;
     private Player currentUser;
-    private JTextField tf;
-
-    public static final int DICTIONARY_SIZE = 10000;
+    public static final int DICTIONARY_SIZE = 10001;
     public static final String[] DICTIONARY = new String[DICTIONARY_SIZE];
     private static int numBoards = 2;
     private static int targetScore = 5;
@@ -33,7 +31,6 @@ public class Game implements ActionListener {
     public Game() {
         boards = new Board[numBoards];
         makeBoards();
-        int random = (int) (Math.random() * numBoards);
         b = boards[1];
         p1 = new Player(timer1X, timerY);
         p2 = new Player(timer2X, timerY);
@@ -42,8 +39,6 @@ public class Game implements ActionListener {
         grid = b.getGrid();
         words = new ArrayList<>();
         currentUser = p1;
-        tf = new JTextField(20);
-        tf.setPreferredSize(new Dimension());
         window = new GameViewer(this);
     }
 
@@ -51,11 +46,18 @@ public class Game implements ActionListener {
         loadDictionary();
         generateWords(grid);
         while (p1.getScore() <= targetScore && p2.getScore() <= targetScore) {
-            window.repaint();
+//            window.repaint();
             resetTimer();
             Timer clock = new Timer(SLEEP_TIME, this);
             clock.start();
-
+            if (isValidWord(currentUser.getInput())) {
+                currentUser.setScore(currentUser.getScore() + 1);
+                switchUser();
+                resetTimer();
+            }
+            else {
+                // set incorrect boolean to true so can be accessed in front end
+            }
 
             //start timer
             //get input
@@ -127,7 +129,7 @@ public class Game implements ActionListener {
             word = "";
             for (int j = i; j < letters.length(); j++) {
                 word += letters.charAt(j);
-                if (binarySearch(word.toLowerCase(Locale.ROOT), DICTIONARY, 0, DICTIONARY_SIZE - 1)) {
+                if (binarySearch(word.toLowerCase(Locale.ROOT), DICTIONARY, 0, DICTIONARY_SIZE - 1) && word.length() > 2) {
                     words.add(word);
                 }
             }
@@ -154,6 +156,15 @@ public class Game implements ActionListener {
         }
         // Recursively searches the new half of the dictionary
         return binarySearch(word, dictionary, low, high);
+    }
+
+    private boolean isValidWord(String word) {
+        for (String str : words) {
+            if (str.equals(word)) {
+                return true;
+            }
+        }
+        return false;
     }
 
     public static void loadDictionary() {
@@ -203,10 +214,18 @@ public class Game implements ActionListener {
         return this.b;
     }
 
+    public Player getP1() {
+        return p1;
+    }
+
+    public Player getP2() {
+        return p2;
+    }
+
     @Override
     public void actionPerformed(ActionEvent e) {
         turnTime ++;
-        window.repaint();
+//        window.repaint();
     }
 
     public static void main(String[] args){

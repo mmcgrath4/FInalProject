@@ -1,11 +1,14 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="f632e51f-8883-4c64-8f17-ef321405bd2f" name="Changes" comment="update">
+    <list default="true" id="f632e51f-8883-4c64-8f17-ef321405bd2f" name="Changes" comment="struggling with getting text input">
+      <change afterPath="$PROJECT_DIR$/hs_err_pid722.log" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/TextBox.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Resources/dictionary.txt" beforeDir="false" afterPath="$PROJECT_DIR$/Resources/dictionary.txt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Resources/search2.png" beforeDir="false" afterPath="$PROJECT_DIR$/Resources/search2.png" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/Game.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Game.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/GameViewer.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/GameViewer.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Player.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Player.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -47,6 +50,20 @@
     <key name="MoveFile.RECENT_KEYS">
       <recent name="$PROJECT_DIR$/Resources" />
     </key>
+  </component>
+  <component name="RunManager">
+    <configuration name="Game" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
+      <option name="MAIN_CLASS_NAME" value="Game" />
+      <module name="FInalProject" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <recent_temporary>
+      <list>
+        <item itemvalue="Application.Game" />
+      </list>
+    </recent_temporary>
   </component>
   <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
   <component name="TaskManager">
@@ -99,7 +116,14 @@
       <option name="project" value="LOCAL" />
       <updated>1683312388689</updated>
     </task>
-    <option name="localTasksCounter" value="7" />
+    <task id="LOCAL-00007" summary="struggling with getting text input">
+      <created>1683521372684</created>
+      <option name="number" value="00007" />
+      <option name="presentableId" value="LOCAL-00007" />
+      <option name="project" value="LOCAL" />
+      <updated>1683521372684</updated>
+    </task>
+    <option name="localTasksCounter" value="8" />
     <servers />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
@@ -119,7 +143,8 @@
     <MESSAGE value="done a lot of stuff - working on generateWords" />
     <MESSAGE value="Generate words works now. Now need to work on the visual component" />
     <MESSAGE value="update" />
-    <option name="LAST_COMMIT_MESSAGE" value="update" />
+    <MESSAGE value="struggling with getting text input" />
+    <option name="LAST_COMMIT_MESSAGE" value="struggling with getting text input" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
