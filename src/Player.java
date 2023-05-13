@@ -1,22 +1,19 @@
 public class Player {
     private int score;
     private String input;
-    private int timerX;
-    private int timerY;
 
-    public Player(int timerX, int timerY) {
+
+    public Player() {
         score = 0;
         input = "";
-        this.timerX = timerX;
-        this.timerY = timerY;
     }
 
     public int getScore() {
         return score;
     }
 
-    public void setScore(int score) {
-        this.score = score;
+    public void increaseScore() {
+        score++;
     }
 
     public String getInput() {

@@ -8254,12 +8254,12 @@ smoking
 smooth
 sms
 smtp
-sn
 snake
 snap
 snapshot
 snow
 snowboard
+snowman
 so
 soa
 soap

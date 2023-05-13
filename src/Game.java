@@ -14,73 +14,80 @@ public class Game implements ActionListener {
     private Board b;
     private Player p1;
     private Player p2;
-    private double startTime;
-    private double turnTime;
+    private int turnTime;
     private String[] grid;
     private ArrayList<String> words;
+    private ArrayList<String> used;
     private Player currentUser;
+    private boolean rightAnswer;
     public static final int DICTIONARY_SIZE = 10001;
     public static final String[] DICTIONARY = new String[DICTIONARY_SIZE];
     private static int numBoards = 2;
-    private static int targetScore = 5;
-    private static int timer1X = 300;
-    private static int timerY = 760;
-    private static int timer2X = 1125;
+    private static int targetScore = 3;
+    private static int TIME_LIMIT = 30;
     private static final int SLEEP_TIME = 1000;
 
     public Game() {
         boards = new Board[numBoards];
         makeBoards();
         b = boards[1];
-        p1 = new Player(timer1X, timerY);
-        p2 = new Player(timer2X, timerY);
-        startTime = System.currentTimeMillis();
-        turnTime = 0;
+        p1 = new Player();
+        p2 = new Player();
+        turnTime = TIME_LIMIT;
         grid = b.getGrid();
         words = new ArrayList<>();
+        used = new ArrayList<>();
         currentUser = p1;
+        rightAnswer = false;
         window = new GameViewer(this);
     }
 
-    public void playGame() {
+    public void playGame() throws InterruptedException {
         loadDictionary();
         generateWords(grid);
+        // Starts the actionPerformed method and calls it every second
+        Timer clock = new Timer(SLEEP_TIME, this);
+        clock.start();
+        // Runs until one user has one the game (reached the target score)
         while (p1.getScore() <= targetScore && p2.getScore() <= targetScore) {
-//            window.repaint();
-            resetTimer();
-            Timer clock = new Timer(SLEEP_TIME, this);
-            clock.start();
-            if (isValidWord(currentUser.getInput())) {
-                currentUser.setScore(currentUser.getScore() + 1);
+            rightAnswer = false;
+            window.repaint();
+            // Proceeds once user has inputted something
+            if (window.getInputReceived()) {
+                if (isValidWord(currentUser.getInput())) {
+                    rightAnswer = true;
+                    // Adds a point if correct
+                    currentUser.increaseScore();
+                    window.repaint();
+                    // Makes it so this word cannot be reused
+                    used.add(currentUser.getInput());
+                }
                 switchUser();
                 resetTimer();
+                // Waits so the message can be displayed for 3 seconds
+                Thread.sleep(3000);
             }
-            else {
-                // set incorrect boolean to true so can be accessed in front end
-            }
-
-            //start timer
-            //get input
-            //check input
-            //add score if valid
-            //display incorrect if not
-            //switch user
+            window.setInputReceived(false);
         }
     }
 
-    public ArrayList<String> generateWords(String[] grid) {
+    // Generates all the words in a given 2D array of chars (or array of Strings)
+    public void generateWords(String[] grid) {
         checkRows(grid);
         checkCols(grid);
         checkDiagonals(grid);
-        return words;
     }
 
+    // Checks the rows for possible words
     public void checkRows(String[] grid) {
         for (String row: grid) {
             findWords(row);
         }
     }
+
+    // Checks columns for possible words
     public void checkCols(String[] grid) {
+        // Traverses columns first instead of rows
         for (int i = 0; i < b.getCols(); i++) {
             String str = "";
             for (int j = 0; j < b.getRows(); j++) {
@@ -89,10 +96,13 @@ public class Game implements ActionListener {
             findWords(str);
         }
     }
+
+    // Checks diagonals for possible words
     public void checkDiagonals(String[] grid) {
         int col = b.getCols() - 1;
         int row = 0;
         int diagonalLength = 1;
+        // Starts in the top right corner and traverses left, counting each diagonal from left to right
         while (col > -1 && row < b.getRows()) {
             row = 0;
             String str = "";
@@ -106,6 +116,7 @@ public class Game implements ActionListener {
             diagonalLength ++;
         }
 
+        // Starts in the bottom left corner and traverses up
         row = b.getRows() - 1;
         col = 0;
         diagonalLength = 1;
@@ -123,19 +134,22 @@ public class Game implements ActionListener {
         }
     }
 
+    // Finds all of the words in a given string
     public void findWords(String letters) {
         String word;
         for (int i = 0; i < letters.length(); i ++) {
             word = "";
             for (int j = i; j < letters.length(); j++) {
                 word += letters.charAt(j);
+                // Checks for the word in the dictionary file using binary search
                 if (binarySearch(word.toLowerCase(Locale.ROOT), DICTIONARY, 0, DICTIONARY_SIZE - 1) && word.length() > 2) {
-                    words.add(word);
+                    words.add(word.toLowerCase(Locale.ROOT));
                 }
             }
         }
     }
 
+    // Looks for the word in the dictonary
     public boolean binarySearch(String word, String[] dictionary, int low, int high) {
         // Base Case: returns false if the word has not been found and the whole dictionary has been searched
         if (low > high) {
@@ -158,15 +172,18 @@ public class Game implements ActionListener {
         return binarySearch(word, dictionary, low, high);
     }
 
+    // Checks if user input is in the word search
     private boolean isValidWord(String word) {
         for (String str : words) {
-            if (str.equals(word)) {
+            // Also makes sure that the word has not been used before
+            if (str.equals(word) && !used.contains(word)) {
                 return true;
             }
         }
         return false;
     }
 
+    // Downloads the dictionary as an array of strings
     public static void loadDictionary() {
         Scanner s;
         File dictionaryFile = new File("Resources/dictionary.txt");
@@ -182,6 +199,8 @@ public class Game implements ActionListener {
         }
     }
 
+    // Manually downloads all the boards and their respective images
+    // Only two at this point
     public void makeBoards() {
         String[] grid1 = {"HECILSJOFONION", "XAMPSDKTSEIFRV", "STELOMIARGANZE", "BACUXDOMHFQTSL",
                 "LFGEMKSOAIBEWP", "OHPCLDETRGELBP", "PMYUFEVUQHTGNA", "NEWASLIMCYSAKE",
@@ -197,6 +216,7 @@ public class Game implements ActionListener {
         boards[1] = new Board(grid2, image2, grid2.length, grid2[0].length());
     }
 
+    // Changes the currentUser variable
     public void switchUser() {
         if (currentUser.equals(p1)) {
             currentUser = p2;
@@ -205,13 +225,9 @@ public class Game implements ActionListener {
             currentUser = p1;
         }
     }
+    // Resets the timer to 30 seconds
     public void resetTimer() {
-        startTime = System.currentTimeMillis();
-        turnTime = 0;
-    }
-
-    public Board getBoard() {
-        return this.b;
+        turnTime = TIME_LIMIT;
     }
 
     public Player getP1() {
@@ -222,13 +238,30 @@ public class Game implements ActionListener {
         return p2;
     }
 
-    @Override
-    public void actionPerformed(ActionEvent e) {
-        turnTime ++;
-//        window.repaint();
+    public Player getCurrentUser() {
+        return currentUser;
     }
 
-    public static void main(String[] args){
+    public int getTurnTime() {
+        return turnTime;
+    }
+
+    public boolean isRightAnswer() {
+        return rightAnswer;
+    }
+
+    // This handles the timers, as it is called every 1 second and decrements the timer
+    @Override
+    public void actionPerformed(ActionEvent e) {
+        turnTime --;
+        if (turnTime == 0) {
+            switchUser();
+            resetTimer();
+        }
+        window.repaint();
+    }
+
+    public static void main(String[] args) throws InterruptedException {
         Game g = new Game();
         g.playGame();
     }
