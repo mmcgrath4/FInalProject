@@ -113,6 +113,7 @@ public class GameViewer extends JFrame implements ActionListener  {
         drawScore(g);
         drawMessage(g);
         drawTurn(g);
+        drawGameOver(g);
     }
 
     // Draws the timers underneath the text boxes
@@ -169,6 +170,21 @@ public class GameViewer extends JFrame implements ActionListener  {
             turn = "Player 1's turn";
         }
         g.drawString(turn, turnX, messageY);
+    }
+
+    // Paints over the window and prints who won the game
+    public void drawGameOver(Graphics g) {
+        if (game.isGameOver()) {
+            g.setColor(new Color(111,168,220));
+            g.fillRect(0, 0, WINDOW_WIDTH, WINDOW_HEIGHT);
+            g.setColor(Color.BLACK);
+            if (game.getWinner().equals(game.getP1())) {
+                g.drawString("Player 1 Wins!", 450, 290);
+            }
+            else {
+                g.drawString("Player 2 Wins!", 450, 290);
+            }
+        }
     }
 
     public boolean getInputReceived() {

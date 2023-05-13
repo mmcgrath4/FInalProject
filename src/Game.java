@@ -20,6 +20,8 @@ public class Game implements ActionListener {
     private ArrayList<String> used;
     private Player currentUser;
     private boolean rightAnswer;
+    private boolean gameOver;
+    private Player winner;
     public static final int DICTIONARY_SIZE = 10001;
     public static final String[] DICTIONARY = new String[DICTIONARY_SIZE];
     private static int numBoards = 2;
@@ -39,6 +41,8 @@ public class Game implements ActionListener {
         used = new ArrayList<>();
         currentUser = p1;
         rightAnswer = false;
+        gameOver = false;
+        winner = null;
         window = new GameViewer(this);
     }
 
@@ -49,7 +53,7 @@ public class Game implements ActionListener {
         Timer clock = new Timer(SLEEP_TIME, this);
         clock.start();
         // Runs until one user has one the game (reached the target score)
-        while (p1.getScore() <= targetScore && p2.getScore() <= targetScore) {
+        while (!gameOver) {
             rightAnswer = false;
             window.repaint();
             // Proceeds once user has inputted something
@@ -65,10 +69,16 @@ public class Game implements ActionListener {
                 switchUser();
                 resetTimer();
                 // Waits so the message can be displayed for 3 seconds
-                Thread.sleep(3000);
+                Thread.sleep(2000);
             }
             window.setInputReceived(false);
+            if (p1.getScore() == targetScore || p2.getScore() == targetScore) {
+                gameOver = true;
+            }
         }
+        switchUser();
+        winner = currentUser;
+        window.repaint();
     }
 
     // Generates all the words in a given 2D array of chars (or array of Strings)
@@ -248,6 +258,14 @@ public class Game implements ActionListener {
 
     public boolean isRightAnswer() {
         return rightAnswer;
+    }
+
+    public boolean isGameOver() {
+        return gameOver;
+    }
+
+    public Player getWinner() {
+        return winner;
     }
 
     // This handles the timers, as it is called every 1 second and decrements the timer
