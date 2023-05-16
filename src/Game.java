@@ -1,3 +1,6 @@
+//By Mikey McGrath
+// May 2023
+
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
@@ -58,6 +61,7 @@ public class Game implements ActionListener {
             window.repaint();
             // Proceeds once user has inputted something
             if (window.getInputReceived()) {
+                System.out.println("valid");
                 if (isValidWord(currentUser.getInput())) {
                     rightAnswer = true;
                     // Adds a point if correct
